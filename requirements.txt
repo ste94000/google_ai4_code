@@ -10,3 +10,5 @@ scikit-learn
 nltk
 tqdm
 xgboost
+tensorflow
+transformers
