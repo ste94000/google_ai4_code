@@ -8,4 +8,4 @@ raw_data/
 .env
 data/
 models/
-notebooks/
+.python-version
