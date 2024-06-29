@@ -8,6 +8,7 @@ from google_ai4_code_script.model import *
 from google_ai4_code_script.data import *
 from google_ai4_code_script.utils import *
 
+
 # DISTILBERT
 
 def main_distilbert(only_markdown: bool = True, ):
@@ -32,9 +33,8 @@ def main_distilbert(only_markdown: bool = True, ):
 
 # CODEBERT
 
-def main_codebert():
-    df = get_df_codebert()
-
+def main_codebert(notebook_json):
+    df = get_df_codebert(notebook_json)
 
     fts = get_features(df)
     input_ids, attention_mask, features = tokenize_codebert(df, fts)

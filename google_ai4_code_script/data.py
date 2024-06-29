@@ -9,6 +9,7 @@ import glob
 from google_ai4_code_script.params import *
 from google_ai4_code_script.utils import *
 
+
 def read_notebook(path: str) -> pd.DataFrame:
     with open(path) as file:
         df = pd.DataFrame(json.load(file))
@@ -42,9 +43,9 @@ def get_dataset_distilbert(
 
 # CODEBERT
 
-def get_df_codebert():
-    paths = 'input/ipynb/test.ipynb'
-    df = convert_notebook(paths)
+def get_df_codebert(notebook_json):
+    #paths = 'input/ipynb/test.ipynb'
+    df = convert_notebook(notebook_json)
     print(df)
     #df = read_notebook(paths).set_index("id", append=True).swaplevel().reset_index()
     df["source"] = df["source"].str.slice(0, MD_MAX_LEN_CODEBERT)
