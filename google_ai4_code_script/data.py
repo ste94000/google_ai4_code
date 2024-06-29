@@ -7,6 +7,7 @@ from tqdm import tqdm
 from typing import Optional, Tuple, List
 import glob
 from google_ai4_code_script.params import *
+from google_ai4_code_script.utils import *
 
 def read_notebook(path: str) -> pd.DataFrame:
     with open(path) as file:
@@ -42,8 +43,10 @@ def get_dataset_distilbert(
 # CODEBERT
 
 def get_df_codebert():
-    paths = 'input/json/0009d135ece78d.json'
-    df = read_notebook(paths).set_index("id", append=True).swaplevel().sort_index(level="id", sort_remaining=False).reset_index()
+    paths = 'input/ipynb/test.ipynb'
+    df = convert_notebook(paths)
+    print(df)
+    #df = read_notebook(paths).set_index("id", append=True).swaplevel().reset_index()
     df["source"] = df["source"].str.slice(0, MD_MAX_LEN_CODEBERT)
     df["rank"] = df.groupby(["id", "cell_type"]).cumcount()
     df["pct_rank"] = df.groupby(["id", "cell_type"])["rank"].rank(pct=True)

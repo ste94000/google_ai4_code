@@ -2,28 +2,25 @@ import os
 import json
 import pandas as pd
 import numpy as np
+import uuid
 
-def convert_ipynb_to_json(ipynb_path, json_path):
-    """
-    Convertit un fichier .ipynb en fichier .json.
+def generate_cell_id():
+    return uuid.uuid4().hex[:8]
 
-    :param ipynb_path: Chemin du fichier .ipynb
-    :param json_path: Chemin de sortie pour le fichier .json
-    """
-    # Lire le fichier .ipynb
-    with open(ipynb_path, 'r', encoding='utf-8') as ipynb_file:
-        notebook_content = json.load(ipynb_file)
+def convert_notebook(notebook_path: str) -> pd.DataFrame:
+    with open(notebook_path, 'r', encoding='utf-8') as file:
+        notebook_json = json.load(file)
+    cells = notebook_json['cells']
+    data = []
+    for cell in cells:
+        cell_type = cell['cell_type']
+        source = ''.join(cell['source'])  # Join list of strings into a single string
+        cell_id = generate_cell_id()
+        data.append({'cell_id': cell_id, 'cell_type': cell_type, 'source': source})
+    return(pd.DataFrame(data).assign(id=os.path.basename(notebook_path).split(".")[0]).set_index('cell_id')).reset_index()
 
-    # Écrire le contenu dans un fichier .json
-    with open(json_path, 'w', encoding='utf-8') as json_file:
-        json.dump(notebook_content, json_file, indent=2)
-
-def convert_df_to_json(df):
-    #json_dict = {'cell_type':{df['cell_id'][i]:df['cell_type'][i] for i in range(len(df))}, 'source':{df['cell_id'][i]:df['source'][i] for i in range(len(df))}}
-    df['cell_type'] = 'markdown'
-    df = df[['cell_id', 'cell_type', 'source']].set_index('cell_id')
-    print(df)
-    return df.to_json('input/json/test.json', index=True)
+def convert_df_to_ipynb(df):
+    return
 
 if __name__ == '__main__':
     pass

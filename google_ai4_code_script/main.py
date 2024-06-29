@@ -35,6 +35,7 @@ def main_distilbert(only_markdown: bool = True, ):
 def main_codebert():
     df = get_df_codebert()
 
+
     fts = get_features(df)
     input_ids, attention_mask, features = tokenize_codebert(df, fts)
 
@@ -51,7 +52,7 @@ def main_codebert():
     df['rank_pred'] = pred
     df.sort_values('rank_pred', inplace=True)
 
-    return df[['cell_id', 'source', 'rank_pred']][df['cell_type'] == 'markdown']
+    return df[['cell_id', 'cell_type', 'source', 'rank_pred']]
 
 if __name__ == '__main__':
     print(main_codebert())
